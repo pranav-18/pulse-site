@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pulse — AI Status Digests for Jira</title>
+    <meta
+      name="description"
+      content="The weekly status update writes itself. A narrative digest of your Jira projects in Slack, Teams, or email — forwardable as-is."
+    />
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        margin: 0 auto;
+        max-width: 720px;
+        padding: 48px 24px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        line-height: 1.6;
+        color: #172b4d;
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          color: #e6e8ee;
+          background: #16181d;
+        }
+        a {
+          color: #6ea8ff;
+        }
+        .muted {
+          color: #9aa3b0 !important;
+        }
+        li,
+        td {
+          border-color: #333 !important;
+        }
+      }
+      h1 {
+        font-size: 28px;
+        margin: 0 0 4px;
+      }
+      h2 {
+        font-size: 18px;
+        margin: 32px 0 8px;
+      }
+      a {
+        color: #0052cc;
+      }
+      .muted {
+        color: #6b778c;
+        font-size: 14px;
+      }
+      ol li {
+        margin: 0 0 8px;
+      }
+      .cta {
+        display: inline-block;
+        margin: 16px 0;
+        padding: 10px 18px;
+        background: #0052cc;
+        color: #fff;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 600;
+      }
+      footer {
+        margin-top: 48px;
+        padding-top: 16px;
+        border-top: 1px solid #ebecf0;
+        font-size: 13px;
+        color: #6b778c;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Pulse — AI Status Digests for Jira</h1>
+    <p class="muted">The weekly status update writes itself.</p>
+
+    <p>
+      On the days you choose, Pulse reads your Jira projects and writes the status update a strong product lead would write:
+      a prose TL;DR over scannable progress, blocker, and scope bullets, with a portfolio rollup, cross-project dependency
+      detection, and a by-the-numbers appendix — delivered to Slack, Microsoft Teams, or email, good enough to forward to an
+      executive without editing.
+    </p>
+
+    <!-- Replace # with the Marketplace listing URL after approval -->
+    <a class="cta" href="#">Get it on the Atlassian Marketplace</a>
+
+    <h2>Get started (under 5 minutes)</h2>
+    <ol>
+      <li>Install Pulse from the Atlassian Marketplace on your Jira Cloud site.</li>
+      <li>Open <strong>Jira Settings → Apps → Pulse</strong>. The 3-step checklist walks you through it.</li>
+      <li>
+        Pick your projects (up to 20), the days and time you want digests, and at least one channel (Slack webhook, Teams
+        webhook, or email recipients).
+      </li>
+      <li>Hit <strong>Send test digest now</strong> — your first digest arrives in about a minute.</li>
+    </ol>
+
+    <h2>What Pulse does</h2>
+    <p>Every digest is built from what's actually in Jira — never invented:</p>
+    <ol>
+      <li>
+        <strong>A narrative you can forward</strong> — TL;DR, progress, risks &amp; blockers, what's next. Written like a
+        senior PM, guarded against fabrication and issue-key dumps.
+      </li>
+      <li>
+        <strong>Portfolio rollup</strong> — one summary across your pods, with cross-project dependencies called out ("KAN-7
+        is blocked by PLS-9") and the decisions leadership needs to make.
+      </li>
+      <li>
+        <strong>By the numbers</strong> — story points done vs open, per-person contribution, epic progress, and a timeline —
+        computed from Jira data, never by the AI.
+      </li>
+      <li>
+        <strong>Health trends and suggested actions</strong> — ▲/▼ trajectory per pod week over week, and a concrete next
+        step on every blocked or overdue ticket.
+      </li>
+      <li>
+        <strong>The Pulse Hub</strong> — an interactive page in Jira with the 30-second read on top: TL;DR, decisions needed,
+        health, and what to chase today.
+      </li>
+    </ol>
+
+    <h2>What's coming</h2>
+    <ul>
+      <li><strong>Risk signals</strong> — stale and churn warnings on issues, before they become blockers</li>
+      <li><strong>Trend history</strong> — multi-week trajectory per pod in the Hub</li>
+      <li><strong>Team-tone digests</strong> — a friendlier voice for team channels alongside the executive one</li>
+      <li><strong>Confluence publishing</strong> — every digest archived as a page in your space</li>
+    </ul>
+    <p class="muted">Rate Pulse and tell us what to build next — right inside the Pulse Hub (Apps → Pulse).</p>
+
+    <h2>FAQ</h2>
+    <p>
+      <strong>Does my team have to change how they work?</strong> No. Pulse reads what's already in Jira — no standup
+      prompts, no forms, no templates.
+    </p>
+    <p>
+      <strong>What data leaves my site?</strong> Issue summaries, statuses, dates, and sprint metadata for the projects you
+      select are sent to Anthropic's API to write the digest; the finished digest goes to the channels you configure.
+      Comments, descriptions, and Confluence excerpts are read only if an admin opts in. Full details:
+      <a href="privacy.html">privacy &amp; data handling</a>.
+    </p>
+    <p>
+      <strong>Where do I see digests inside Jira?</strong> The Pulse Hub (Apps → Pulse) shows the latest portfolio view with
+      health, trends, and per-project detail; every project also has a Pulse Digest page.
+    </p>
+    <p>
+      <strong>Something broke?</strong> Set a failure-alert email in the admin page and Pulse tells you when a scheduled run
+      fails. For anything else: <a href="mailto:pranavrox92@gmail.com">email support</a> — we respond within 48 hours.
+    </p>
+
+    <footer>
+      <a href="privacy.html">Privacy &amp; data handling</a> · <a href="mailto:pranavrox92@gmail.com">Support</a>
+    </footer>
+  </body>
+</html>
