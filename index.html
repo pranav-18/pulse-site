@@ -1,159 +1,258 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Pulse — AI Status Digests for Jira</title>
-    <meta
-      name="description"
-      content="The weekly status update writes itself. A narrative digest of your Jira projects in Slack, Teams, or email — forwardable as-is."
-    />
-    <style>
-      :root {
-        color-scheme: light dark;
-      }
-      body {
-        margin: 0 auto;
-        max-width: 720px;
-        padding: 48px 24px;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        line-height: 1.6;
-        color: #172b4d;
-      }
-      @media (prefers-color-scheme: dark) {
-        body {
-          color: #e6e8ee;
-          background: #16181d;
-        }
-        a {
-          color: #6ea8ff;
-        }
-        .muted {
-          color: #9aa3b0 !important;
-        }
-        li,
-        td {
-          border-color: #333 !important;
-        }
-      }
-      h1 {
-        font-size: 28px;
-        margin: 0 0 4px;
-      }
-      h2 {
-        font-size: 18px;
-        margin: 32px 0 8px;
-      }
-      a {
-        color: #0052cc;
-      }
-      .muted {
-        color: #6b778c;
-        font-size: 14px;
-      }
-      ol li {
-        margin: 0 0 8px;
-      }
-      .cta {
-        display: inline-block;
-        margin: 16px 0;
-        padding: 10px 18px;
-        background: #0052cc;
-        color: #fff;
-        border-radius: 4px;
-        text-decoration: none;
-        font-weight: 600;
-      }
-      footer {
-        margin-top: 48px;
-        padding-top: 16px;
-        border-top: 1px solid #ebecf0;
-        font-size: 13px;
-        color: #6b778c;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Pulse — AI Status Digests for Jira</h1>
-    <p class="muted">The weekly status update writes itself.</p>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pulse — AI Status Digests for Jira</title>
+<meta name="description" content="The weekly status update writes itself. A narrative digest of your Jira projects in Slack, Teams, or email — forwardable as-is." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230052cc'/%3E%3Cpath d='M5 17h5l3-8 5 16 3-8h6' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<style>
+  :root {
+    color-scheme: light dark;
+    --ink: #172b4d; --muted: #5e6c84; --bg: #ffffff; --panel: #f7f8fa; --border: #e4e7ec;
+    --blue: #0052cc; --blue-dark: #0747a6; --blue-tint: #eef4ff;
+    --green: #1f8a5f; --amber: #b25e09;
+    --radius: 14px; --shadow: 0 1px 2px rgba(23,43,77,.06), 0 8px 24px rgba(23,43,77,.05);
+    --maxw: 980px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --ink: #e8ecf3; --muted: #9aa7bd; --bg: #0f1420; --panel: #161c2b; --border: #262f42;
+      --blue: #5b9bff; --blue-dark: #86b3ff; --blue-tint: #16233f; --green: #4ecb92; --amber: #e0a458;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 28px rgba(0,0,0,.35); }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--blue); }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+  .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--blue); margin: 0 0 10px; }
+  h1 { font-size: clamp(32px, 5vw, 46px); line-height: 1.12; margin: 0 0 16px; letter-spacing: -.01em; }
+  h2 { font-size: 26px; margin: 0 0 6px; letter-spacing: -.01em; }
+  h3 { font-size: 17px; margin: 0 0 6px; }
+  .lede { font-size: 18px; color: var(--muted); max-width: 640px; margin: 0 0 28px; }
+  .section-sub { color: var(--muted); font-size: 15px; margin: 0 0 32px; max-width: 620px; }
 
-    <p>
-      On the days you choose, Pulse reads your Jira projects and writes the status update a strong product lead would write:
-      a prose TL;DR over scannable progress, blocker, and scope bullets, with a portfolio rollup, cross-project dependency
-      detection, and a by-the-numbers appendix — delivered to Slack, Microsoft Teams, or email, good enough to forward to an
-      executive without editing.
-    </p>
+  nav.top { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+  nav.top .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .brand { font-weight: 800; font-size: 17px; letter-spacing: -.01em; text-decoration: none; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+  .brand-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 4px var(--blue-tint); }
+  .navlinks { display: flex; gap: 28px; font-size: 14px; font-weight: 600; }
+  .navlinks a { color: var(--muted); text-decoration: none; }
+  .navlinks a:hover { color: var(--ink); }
+  @media (max-width: 640px) { .navlinks { display: none; } }
 
-    <!-- Replace # with the Marketplace listing URL after approval -->
-    <a class="cta" href="#">Get it on the Atlassian Marketplace</a>
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 10px; font-weight: 700; font-size: 14.5px; text-decoration: none; border: 1px solid transparent; cursor: pointer; }
+  .btn-primary { background: var(--blue); color: #fff; }
+  .btn-primary:hover { background: var(--blue-dark); }
+  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--border); }
+  .btn-ghost:hover { border-color: var(--blue); color: var(--blue); }
 
-    <h2>Get started (under 5 minutes)</h2>
-    <ol>
-      <li>Install Pulse from the Atlassian Marketplace on your Jira Cloud site.</li>
-      <li>Open <strong>Jira Settings → Apps → Pulse</strong>. The 3-step checklist walks you through it.</li>
-      <li>
-        Pick your projects (up to 20), the days and time you want digests, and at least one channel (Slack webhook, Teams
-        webhook, or email recipients).
-      </li>
-      <li>Hit <strong>Send test digest now</strong> — your first digest arrives in about a minute.</li>
-    </ol>
+  .hero { padding: 76px 0 64px; }
+  .hero .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+  .hero .note { font-size: 13px; color: var(--muted); margin-top: 14px; }
 
+  section { padding: 56px 0; border-top: 1px solid var(--border); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
+  .card .icon { font-size: 22px; margin-bottom: 10px; display: block; }
+  .card p { color: var(--muted); font-size: 14.5px; margin: 0; }
+
+  .steps { counter-reset: step; display: grid; gap: 14px; max-width: 640px; }
+  .step { display: flex; gap: 16px; align-items: flex-start; }
+  .step .num { counter-increment: step; flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--blue-tint); color: var(--blue); font-weight: 800; font-size: 13.5px; display: flex; align-items: center; justify-content: center; }
+  .step .num::before { content: counter(step); }
+  .step div p { margin: 2px 0 0; color: var(--muted); font-size: 14.5px; }
+
+  .roadmap-item { display: flex; gap: 12px; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .roadmap-item:last-child { border-bottom: none; }
+  .badge { flex: none; font-size: 10.5px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--amber); background: color-mix(in srgb, var(--amber) 14%, transparent); padding: 3px 9px; border-radius: 100px; margin-top: 3px; }
+  .roadmap-item p { margin: 2px 0 0; color: var(--muted); font-size: 14.5px; }
+
+  .faq-item { padding: 18px 0; border-bottom: 1px solid var(--border); }
+  .faq-item:last-child { border-bottom: none; }
+  .faq-item p { margin: 6px 0 0; color: var(--muted); font-size: 14.5px; }
+
+  .contact-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 36px; align-items: start; }
+  @media (max-width: 760px) { .contact-grid { grid-template-columns: 1fr; } }
+  .contact-side p { color: var(--muted); font-size: 14.5px; }
+  .contact-side .direct { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border); font-size: 14px; }
+
+  form.ticket { display: grid; gap: 12px; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
+  .field { display: grid; gap: 6px; }
+  .field label { font-size: 13px; font-weight: 700; }
+  .field input, .field textarea { font: inherit; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--ink); }
+  .field input:focus, .field textarea:focus { outline: 2px solid var(--blue); outline-offset: 1px; }
+  .field textarea { resize: vertical; min-height: 96px; }
+  .hp { position: absolute; left: -9999px; }
+  .form-msg { font-size: 13.5px; padding: 10px 12px; border-radius: 8px; display: none; }
+  .form-msg.ok { display: block; background: color-mix(in srgb, var(--green) 14%, transparent); color: var(--green); }
+  .form-msg.err { display: block; background: color-mix(in srgb, #de350b 14%, transparent); color: #de350b; }
+
+  footer { padding: 32px 0 48px; }
+  footer .wrap { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 13px; color: var(--muted); }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--blue); }
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="wrap">
+    <a class="brand" href="#"><span class="brand-dot"></span>Pulse</a>
+    <div class="navlinks">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">AI Status Digests for Jira</p>
+    <h1>The weekly status update writes itself.</h1>
+    <p class="lede">On the days you choose, Pulse reads your Jira projects and writes the update a strong product lead would write — a prose TL;DR over scannable progress, blockers, and scope, with a portfolio rollup and cross-project dependencies called out. Good enough to forward to an executive without editing.</p>
+    <div class="actions">
+      <!-- Replace # with the Marketplace listing URL after approval -->
+      <a class="btn btn-primary" href="#">Get it on the Atlassian Marketplace</a>
+      <a class="btn btn-ghost" href="#how">See how it works</a>
+    </div>
+    <p class="note">Free to install · 3-minute setup · No credit card</p>
+  </div>
+</header>
+
+<section id="features">
+  <div class="wrap">
     <h2>What Pulse does</h2>
-    <p>Every digest is built from what's actually in Jira — never invented:</p>
-    <ol>
-      <li>
-        <strong>A narrative you can forward</strong> — TL;DR, progress, risks &amp; blockers, what's next. Written like a
-        senior PM, guarded against fabrication and issue-key dumps.
-      </li>
-      <li>
-        <strong>Portfolio rollup</strong> — one summary across your pods, with cross-project dependencies called out ("KAN-7
-        is blocked by PLS-9") and the decisions leadership needs to make.
-      </li>
-      <li>
-        <strong>By the numbers</strong> — story points done vs open, per-person contribution, epic progress, and a timeline —
-        computed from Jira data, never by the AI.
-      </li>
-      <li>
-        <strong>Health trends and suggested actions</strong> — ▲/▼ trajectory per pod week over week, and a concrete next
-        step on every blocked or overdue ticket.
-      </li>
-      <li>
-        <strong>The Pulse Hub</strong> — an interactive page in Jira with the 30-second read on top: TL;DR, decisions needed,
-        health, and what to chase today.
-      </li>
-    </ol>
+    <p class="section-sub">Every digest is built from what's actually in Jira — never invented.</p>
+    <div class="grid">
+      <div class="card"><span class="icon">📝</span><h3>A narrative you can forward</h3><p>TL;DR, progress, risks &amp; blockers, what's next — written like a senior PM, guarded against fabrication and issue-key dumps.</p></div>
+      <div class="card"><span class="icon">🗂️</span><h3>Portfolio rollup</h3><p>One summary across your pods, with cross-project dependencies called out ("KAN-7 is blocked by PLS-9") and the decisions leadership needs to make.</p></div>
+      <div class="card"><span class="icon">📊</span><h3>By the numbers</h3><p>Story points done vs open, per-person contribution, epic progress, and a timeline — computed from Jira data, never by the AI.</p></div>
+      <div class="card"><span class="icon">📈</span><h3>Health trends &amp; actions</h3><p>▲/▼ trajectory per pod week over week, and a concrete next step suggested on every blocked or overdue ticket.</p></div>
+      <div class="card"><span class="icon">🎯</span><h3>The Pulse Hub</h3><p>An interactive page in Jira with the 30-second read on top: TL;DR, decisions needed, health, and what to chase today.</p></div>
+      <div class="card"><span class="icon">🎛️</span><h3>Personal digests</h3><p>Anyone can self-serve their own filtered email — pick your projects in the Hub, get your own copy alongside the team-wide one.</p></div>
+    </div>
+  </div>
+</section>
 
+<section id="how">
+  <div class="wrap">
+    <h2>Get started in under 5 minutes</h2>
+    <p class="section-sub">No templates, no API keys, no behavior change for your team.</p>
+    <div class="steps">
+      <div class="step"><span class="num"></span><div><h3>Install from the Marketplace</h3><p>Pulse installs into your Jira Cloud site like any other app.</p></div></div>
+      <div class="step"><span class="num"></span><div><h3>Open Jira Settings → Apps → Pulse</h3><p>The 3-step checklist walks you through setup.</p></div></div>
+      <div class="step"><span class="num"></span><div><h3>Pick projects, schedule, and a channel</h3><p>Up to 20 projects, any days/time, and Slack, Teams, or email.</p></div></div>
+      <div class="step"><span class="num"></span><div><h3>Hit "Send test digest now"</h3><p>Your first digest arrives in about a minute.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="roadmap">
+  <div class="wrap">
     <h2>What's coming</h2>
-    <ul>
-      <li><strong>Risk signals</strong> — stale and churn warnings on issues, before they become blockers</li>
-      <li><strong>Trend history</strong> — multi-week trajectory per pod in the Hub</li>
-      <li><strong>Team-tone digests</strong> — a friendlier voice for team channels alongside the executive one</li>
-      <li><strong>Confluence publishing</strong> — every digest archived as a page in your space</li>
-    </ul>
-    <p class="muted">Rate Pulse and tell us what to build next — right inside the Pulse Hub (Apps → Pulse).</p>
+    <p class="section-sub">Rate Pulse and tell us what to build next — right inside the Pulse Hub (Apps → Pulse).</p>
+    <div>
+      <div class="roadmap-item"><span class="badge">Next</span><div><h3>Risk signals</h3><p>Stale and churn warnings on issues, before they become blockers.</p></div></div>
+      <div class="roadmap-item"><span class="badge">Next</span><div><h3>Epic-level personalization</h3><p>Go deeper than project-level — follow specific epics, with your own AI-written narrative.</p></div></div>
+      <div class="roadmap-item"><span class="badge">Planned</span><div><h3>Trend history</h3><p>Multi-week trajectory per pod, right in the Hub.</p></div></div>
+      <div class="roadmap-item"><span class="badge">Planned</span><div><h3>Team-tone digests</h3><p>A friendlier voice for team channels alongside the executive one.</p></div></div>
+      <div class="roadmap-item"><span class="badge">Planned</span><div><h3>Confluence publishing</h3><p>Every digest archived as a page in your space.</p></div></div>
+    </div>
+  </div>
+</section>
 
+<section id="faq">
+  <div class="wrap">
     <h2>FAQ</h2>
-    <p>
-      <strong>Does my team have to change how they work?</strong> No. Pulse reads what's already in Jira — no standup
-      prompts, no forms, no templates.
-    </p>
-    <p>
-      <strong>What data leaves my site?</strong> Issue summaries, statuses, dates, and sprint metadata for the projects you
-      select are sent to Anthropic's API to write the digest; the finished digest goes to the channels you configure.
-      Comments, descriptions, and Confluence excerpts are read only if an admin opts in. Full details:
-      <a href="privacy.html">privacy &amp; data handling</a>.
-    </p>
-    <p>
-      <strong>Where do I see digests inside Jira?</strong> The Pulse Hub (Apps → Pulse) shows the latest portfolio view with
-      health, trends, and per-project detail; every project also has a Pulse Digest page.
-    </p>
-    <p>
-      <strong>Something broke?</strong> Set a failure-alert email in the admin page and Pulse tells you when a scheduled run
-      fails. For anything else: <a href="mailto:support@pulsedigest.net">email support</a> — we respond within 48 hours.
-    </p>
+    <div>
+      <div class="faq-item"><h3>Does my team have to change how they work?</h3><p>No. Pulse reads what's already in Jira — no standup prompts, no forms, no templates.</p></div>
+      <div class="faq-item"><h3>What data leaves my site?</h3><p>Issue summaries, statuses, dates, and sprint metadata for the projects you select are sent to Anthropic's API to write the digest; the finished digest goes to the channels you configure. Comments, descriptions, and Confluence excerpts are read only if an admin opts in. Full details: <a href="privacy.html">privacy &amp; data handling</a>.</p></div>
+      <div class="faq-item"><h3>Where do I see digests inside Jira?</h3><p>The Pulse Hub (Apps → Pulse) shows the latest portfolio view with health, trends, and per-project detail; every project also has a Pulse Digest page.</p></div>
+      <div class="faq-item"><h3>Something broke?</h3><p>Set a failure-alert email in the admin page and Pulse tells you when a scheduled run fails. For anything else, use the form below — we respond within 48 hours.</p></div>
+    </div>
+  </div>
+</section>
 
-    <footer>
-      <a href="privacy.html">Privacy &amp; data handling</a> · <a href="mailto:support@pulsedigest.net">Support</a>
-    </footer>
-  </body>
+<section id="contact">
+  <div class="wrap">
+    <h2>Contact support</h2>
+    <p class="section-sub">Every submission gets a ticket number and a confirmation email — we reply within 48 hours.</p>
+    <div class="contact-grid">
+      <div class="contact-side">
+        <p>Bug reports, feature requests, billing questions, anything — this form reaches us directly.</p>
+        <div class="direct">Prefer email? <a href="mailto:support@pulsedigest.net">support@pulsedigest.net</a></div>
+      </div>
+      <form class="ticket" id="ticketForm">
+        <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" required maxlength="200" /></div>
+        <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" required maxlength="200" /></div>
+        <div class="field"><label for="f-subject">Subject</label><input id="f-subject" name="subject" maxlength="200" /></div>
+        <div class="field"><label for="f-message">Message</label><textarea id="f-message" name="message" required maxlength="4000"></textarea></div>
+        <input class="hp" tabindex="-1" autocomplete="off" name="website" id="f-website" />
+        <button class="btn btn-primary" type="submit" id="f-submit">Send message</button>
+        <div class="form-msg" id="f-msg" role="status"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© Pulse — AI Status Digests for Jira</span>
+    <span><a href="privacy.html">Privacy &amp; data handling</a> · <a href="mailto:support@pulsedigest.net">Support</a></span>
+  </div>
+</footer>
+
+<script>
+  // Dev-environment Forge webtrigger — swap for the production URL after G3 prod deploy.
+  var TICKET_ENDPOINT = "https://4260af3d-e97c-4fc1-bf28-e90d0a6b633b.hello.atlassian-dev.net/x1/ZsrxcVqAJB4UjvZnNAQWcI9SQU4";
+  var form = document.getElementById('ticketForm');
+  var msg = document.getElementById('f-msg');
+  var submitBtn = document.getElementById('f-submit');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+    msg.className = 'form-msg';
+    msg.textContent = '';
+    var payload = {
+      name: document.getElementById('f-name').value,
+      email: document.getElementById('f-email').value,
+      subject: document.getElementById('f-subject').value,
+      message: document.getElementById('f-message').value,
+      website: document.getElementById('f-website').value
+    };
+    fetch(TICKET_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+      .then(function (r) { return r.json().then(function (data) { return { ok: r.ok, data: data }; }); })
+      .then(function (res) {
+        if (res.ok && res.data.ok) {
+          msg.className = 'form-msg ok';
+          msg.textContent = 'Sent — ticket ' + res.data.ticket + '. Check your email for confirmation.';
+          form.reset();
+        } else {
+          msg.className = 'form-msg err';
+          msg.textContent = (res.data && res.data.error) || 'Something went wrong — please email support@pulsedigest.net directly.';
+        }
+      })
+      .catch(function () {
+        msg.className = 'form-msg err';
+        msg.textContent = 'Network error — please email support@pulsedigest.net directly.';
+      })
+      .finally(function () {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send message';
+      });
+  });
+</script>
+</body>
 </html>
